@@ -46,7 +46,8 @@ bool preamble_has_weakness(long* preamble, uint8_t preamble_length, long value_t
 
 uint32_t find_xmas_weakness(uint8_t preamble_length)
 {
-    long preamble[5] = {0};
+    long preamble[25] = {0};
+    uint8_t preamble_length_bytes = sizeof(long) * preamble_length;
 
     // open the file
     FILE* fp;
@@ -82,19 +83,19 @@ uint32_t find_xmas_weakness(uint8_t preamble_length)
     for (uint16_t offset = 0; offset < sizeof(nums); offset++)
     {
         // copy first n nums into preamble, offset by 0 to start
-        printf("address of preamble: %p, address of nums: %p, address of buf: %p\n", &preamble[0], &nums[1000], &buf[0]);
-        (void) memset(&preamble[0], 1, preamble_length);
-        (void) memcpy(&preamble[offset], &nums[offset], preamble_length);
-        printf("first n nums:\n");
-        for (uint8_t i = 0; i < preamble_length; i++)
-        {
-            printf("%ld\n", nums[i]);
-        }
-        printf("preamble to check:\n");
-        for (uint8_t j = 0; j < preamble_length; j++)
-        {
-            printf("%ld\n", preamble[j]);
-        }
+        // printf("address of preamble: %p, address of nums: %p, address of buf: %p\n", &preamble[0], &nums[1000], &buf[0]);
+        (void) memset(&preamble[0], 0, preamble_length_bytes);
+        (void) memcpy(&preamble[0], &nums[offset], preamble_length_bytes);
+        //printf("first n nums:\n");
+        //for (uint8_t i = 0; i < preamble_length; i++)
+        //{
+        //    printf("%ld\n", nums[i]);
+        //}
+        //printf("preamble to check:\n");
+        //for (uint8_t j = 0; j < preamble_length; j++)
+        //{
+        //    printf("%ld\n", preamble[j]);
+        //}
         long value_to_check = nums[preamble_length + offset];
         printf("value to check: %ld\n", value_to_check);
 
